@@ -1,16 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Student
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    data=Student.objects.all()
+    context={"data":data}
+    return render(request, "index.html", context)
     
 def contactMe(request):
     return render(request, "contactMe.html")
 
 def insertData(request):
-    data=Student.objects.all()
-    context={"data":data}
     if request.method == "POST":
         name=request.POST.get('name')
         email=request.POST.get('email')
@@ -19,4 +19,29 @@ def insertData(request):
         query=Student(name=name,email=email,age=age,gender=gender)
         print(name,email,age,gender)
         query.save()
-    return render(request, "index.html", context)
+        return redirect("/")
+    return render(request, "index.html")
+
+def editData(request, id):
+    if request.method == "POST":
+        name=request.POST['name']
+        email=request.POST['email']
+        age=request.POST['age']
+        gender=request.POST['gender']
+
+        edit=Student.objects.get(id=id)
+        edit.name = name
+        edit.email = email
+        edit.age = age
+        edit.gender = gender
+        edit.save()
+        return redirect("/")
+
+    d=Student.objects.get(id=id)
+    context={"d": d}
+    return render(request, "edit.html", context)
+
+def deleteData(request, id):
+    d=Student.objects.get(id=id)
+    d.delete()
+    return redirect("/")

@@ -26,7 +26,7 @@
             Insert Student Data
         </h2>
         <br />
-        <form action="/insert" method="post">{% csrf_token %}
+        <form action="/insert" method="POST">{% csrf_token %}
             <div class="form-group">
             <input
                 type="text"
@@ -76,6 +76,8 @@
                     <th scope="col">Email</th>
                     <th scope="col">Age</th>
                     <th scope="col">Gender</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -86,6 +88,12 @@
                     <td>{{d.email}}</td>
                     <td>{{d.age}}</td>
                     <td>{{d.gender}}</td>
+                    <td>
+                        <a type="button" href="/edit/{{d.id}}" class="btn btn-outline-primary">Edit</a>
+                    </td>
+                    <td>
+                        <a type="button" href="/delete/{{d.id}}" class="btn btn-outline-danger">Delete</a>
+                    </td>
                 </tr>
                 {% endfor %} 
             </tbody>
